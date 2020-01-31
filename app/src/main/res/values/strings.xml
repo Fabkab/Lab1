@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Lab1</string>
+    <string-array name="courses">
+
+        <item>OCSP</item>
+        <item>CEH</item>
+
+
+    </string-array>
+
+
+</resources>

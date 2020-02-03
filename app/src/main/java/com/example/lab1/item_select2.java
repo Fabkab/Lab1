@@ -10,6 +10,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import static com.example.lab1.MainActivity.editText1;
+import static com.example.lab1.MainActivity.editText2;
+
 public class item_select2 extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
         Button mainpage;
         Button quit;
@@ -23,7 +26,8 @@ public class item_select2 extends AppCompatActivity implements AdapterView.OnIte
 
         private String answer_CEH;
         private int penalty;
-        private int passing_grade=75;
+        TextView display1;
+        TextView display2;
 
     private int questionNumber_CEH;
 
@@ -32,6 +36,10 @@ public class item_select2 extends AppCompatActivity implements AdapterView.OnIte
         protected void onCreate (Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_item_select2);
+            display1=findViewById(R.id.display);
+            display2=findViewById(R.id.display2);
+
+
             questionsView_CEH= (TextView)findViewById(R.id.question_CEH);
             buttonChoice1_CEH= (Button)findViewById(R.id.choice1_CEH);
             buttonChoice2_CEH= (Button)findViewById(R.id.choice2_CEH);
@@ -60,7 +68,7 @@ public class item_select2 extends AppCompatActivity implements AdapterView.OnIte
             quit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent= new Intent(item_select2.this, Summary.class);
+                    Intent intent= new Intent(item_select2.this, Splash.class);
                     startActivity(intent);
                 }
             });
@@ -69,7 +77,6 @@ public class item_select2 extends AppCompatActivity implements AdapterView.OnIte
     public void onClick(View v) {
         switch(v.getId()) {
             case R.id.choice1_CEH:
-                //do something
                 if (buttonChoice1_CEH.getText()!=answer_CEH){
                     Toast.makeText(this,"wrong", Toast.LENGTH_SHORT).show();
                     penalty++;
@@ -81,7 +88,6 @@ public class item_select2 extends AppCompatActivity implements AdapterView.OnIte
                 }
                 break;
             case R.id.choice2_CEH:
-                //do something
                 if (buttonChoice2_CEH.getText()!=answer_CEH){
                     penalty++;
                     Toast.makeText(this,"wrong", Toast.LENGTH_SHORT).show();
@@ -95,7 +101,6 @@ public class item_select2 extends AppCompatActivity implements AdapterView.OnIte
                 break;
 
             case R.id.choice3_CEH:
-                //do something
                 if (buttonChoice3_CEH.getText()!=answer_CEH){
                     penalty++;
                     Toast.makeText(this,"wrong", Toast.LENGTH_SHORT).show();
@@ -108,7 +113,6 @@ public class item_select2 extends AppCompatActivity implements AdapterView.OnIte
                 }
                 break;
             case R.id.choice4_CEH:
-                //do something
                 if (buttonChoice4_CEH.getText()!=answer_CEH){
                     penalty++;
                     Toast.makeText(this,"wrong", Toast.LENGTH_SHORT).show();
@@ -125,7 +129,7 @@ public class item_select2 extends AppCompatActivity implements AdapterView.OnIte
 
 
     private void updateQuestion_CEH(){
-            if (questions_db_CEH.getLength_CEH()> questionNumber_CEH) {
+            if (editText1> questionNumber_CEH) {
 
                 questionsView_CEH.setText(questions_db_CEH.getQuestion_CEH(questionNumber_CEH));
                 buttonChoice1_CEH.setText(questions_db_CEH.getChoice1_CEH(questionNumber_CEH));
@@ -134,17 +138,19 @@ public class item_select2 extends AppCompatActivity implements AdapterView.OnIte
                 buttonChoice4_CEH.setText(questions_db_CEH.getChoice4_CEH(questionNumber_CEH));
                 answer_CEH = questions_db_CEH.getAnswer_CEH(questionNumber_CEH);
                 questionNumber_CEH++;
+                display1.setText("Question "+questionNumber_CEH+ " of "+editText1);
+                display2.setText("Passing grade : "+editText2);
             }
             else{
                 Intent intent = new Intent(item_select2.this, Summary.class);
-                if (((questionNumber_CEH-penalty)*100)/questions_db_CEH.getLength_CEH()>=passing_grade)
+                if ((getScore_CEH()*100)/editText1>=editText2)
                 {
 
-                    intent.putExtra("msg", "You have obtained " + getScore_CEH() + "/" + questions_db_CEH.getLength_CEH() + ". " + ((questionNumber_CEH - penalty) * 100) / questions_db_CEH.getLength_CEH() + "%! You have passed the exam.");
+                    intent.putExtra("msg", "You have obtained " + getScore_CEH() + "/" + editText1 + ". " + ((questionNumber_CEH - penalty) * 100) / editText1 + "%! You have passed the exam.");
                     startActivity(intent);
                 }
                 else {
-                    intent.putExtra("msg", "You have obtained " + getScore_CEH()  + "/" + questions_db_CEH.getLength_CEH() + ". " + ((questionNumber_CEH - penalty) * 100) / questions_db_CEH.getLength_CEH() + "%! You failed the exam.");
+                    intent.putExtra("msg", "You have obtained " + getScore_CEH()  + "/" + editText1+ ". " + ((questionNumber_CEH - penalty) * 100) / editText1 + "%! You failed the exam.");
                     startActivity(intent);
                 }
             }

@@ -7,7 +7,8 @@ public class Questions_db {
             "No matter how it's configured, a single switch port is considered what?",
             "Identify which of the services below uses both TCP and UDP ports.",
             "What is the default 802.1D short spanning tree port cost of a 10 Gbps Ethernet link?",
-            "letters choose c"
+            "Host A receives a frame and discards it after determining it is corrupt. Which OSI layer checks frames for errors?",
+            "Which Rapid Spanning Tree Protocol port state is a combination of standard 802.1D STP's disabled, blocking and listening states?"
 
     };
 
@@ -17,9 +18,10 @@ public class Questions_db {
             {"A separate unicast domain","A separate broadcast domain","A separate multicast domain","A separate collision domain"},
             {"FTP","TFTP","DNS","SSH"},
             {"10","4","2","2000"},
-            {"A", "B","C", "D"}
+            {"Application", "Network","Physical", "Data-link"},
+            {"Blocking", "Discarding", "Learning", "Forwarding\n"}
     };
-    private String answers[]={"Broadcast","Cut-through","A separate collision domain","DNS","2", "C"};
+    private String answers[]={"Broadcast","Cut-through","A separate collision domain","DNS","2", "Network", "Discarding"};
 
     public String getQuestion(int x){
         String question = questions[x];

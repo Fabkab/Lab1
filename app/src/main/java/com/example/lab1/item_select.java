@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import static com.example.lab1.MainActivity.editText1;
+import static com.example.lab1.MainActivity.editText2;
 
 
 public class item_select extends AppCompatActivity implements AdapterView.OnItemSelectedListener,View.OnClickListener {
@@ -29,9 +31,6 @@ public class item_select extends AppCompatActivity implements AdapterView.OnItem
     private int penalty;
     private int questionNumber;
 
-    private String new_question_nbr;
-    private String new_passing_grade;
-    private int passing_grade=75;
     TextView display1;
     TextView display2;
 
@@ -41,15 +40,10 @@ public class item_select extends AppCompatActivity implements AdapterView.OnItem
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_select);
 
-        Intent intent= getIntent();
-        int editText1= intent.getIntExtra(Settings.NUMBER1,0);
-        int editText2= intent.getIntExtra(Settings.NUMBER2,0);
-
 
         display1=findViewById(R.id.display);
         display2=findViewById(R.id.display2);
-        display1.setText(""+editText1);
-        display2.setText(""+editText2);
+
 
         questionsView= (TextView)findViewById(R.id.question);
         buttonChoice1= (Button)findViewById(R.id.choice1);
@@ -82,8 +76,12 @@ public class item_select extends AppCompatActivity implements AdapterView.OnItem
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(item_select.this, Summary.class);
+
+                Intent intent= new Intent(item_select.this, Splash.class);
+
                 startActivity(intent);
+                finish();
+                System.exit(0);
             }
 
         });
@@ -95,7 +93,7 @@ public class item_select extends AppCompatActivity implements AdapterView.OnItem
             case R.id.choice1:
                 //do something
                 if (buttonChoice1.getText()!=answer){
-                    Toast.makeText(this,"wrong"+new_question_nbr, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,"wrong", Toast.LENGTH_SHORT).show();
                     penalty++;
                     updateQuestion();
                 }
@@ -148,7 +146,7 @@ public class item_select extends AppCompatActivity implements AdapterView.OnItem
 
     private void updateQuestion(){
 
-        if (questions_db.getLength()> questionNumber) {
+        if (editText1> questionNumber) {
             questionsView.setText(questions_db.getQuestion(questionNumber));
             buttonChoice1.setText(questions_db.getChoice1(questionNumber));
             buttonChoice2.setText(questions_db.getChoice2(questionNumber));
@@ -156,6 +154,8 @@ public class item_select extends AppCompatActivity implements AdapterView.OnItem
             buttonChoice4.setText(questions_db.getChoice4(questionNumber));
             answer = questions_db.getAnswer(questionNumber);
             questionNumber++;
+            display1.setText("Question "+questionNumber+" of "+editText1);
+            display2.setText("Passing grade: "+editText2);
 
         }
         else{
@@ -163,14 +163,14 @@ public class item_select extends AppCompatActivity implements AdapterView.OnItem
 
             Intent intent = new Intent(item_select.this, Summary.class);
 
-            if ((getScore()*100)/questions_db.getLength()>=passing_grade)
+            if ((getScore()*100)/editText1>=editText2)
             {
 
-                intent.putExtra("msg", "You have obtained " + getScore() + "/" + questions_db.getLength() + ". " + ((questionNumber - penalty) * 100) / questions_db.getLength() + "%! You have passed the exam.");
+                intent.putExtra("msg", "You have obtained " + getScore() + "/" + editText1+ ". " + ((questionNumber - penalty) * 100) / editText1 + "%! You have passed the exam.");
                 startActivity(intent);
             }
             else {
-                intent.putExtra("msg", "You have obtained " +getScore()+ "/" + questions_db.getLength() + ". " + ((questionNumber - penalty) * 100) / questions_db.getLength() + "%! You failed the exam.");
+                intent.putExtra("msg", "You have obtained " +getScore()+ "/" + editText1 + ". " + ((questionNumber - penalty) * 100) / editText1 + "%! You failed the exam.");
                 startActivity(intent);
             }
         }

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="40dp"
-    android:orientation="vertical" android:id="@+id/linearlayout" >
+    android:orientation="vertical"
+    android:id="@+id/linearlayout" >
     <EditText
         android:id="@+id/number_of_questions"
         android:layout_width="wrap_content"
@@ -19,7 +20,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Passing grade in %"
-        android:inputType="number" />
+        android:inputType="numberDecimal"
+        android:selectAllOnFocus="true"/>
 
 
     <Button
@@ -41,12 +43,15 @@
         android:layout_height="wrap_content"
         android:id="@+id/resultView"
         android:layout_marginTop="25dp"
-        android:textSize="15dp"/>
+        android:textSize="15sp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txtView"
         android:layout_marginTop="25dp"
-        android:textSize="30dp"/>
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="-15dp"
+
+        android:textSize="20sp"/>
 </LinearLayout>

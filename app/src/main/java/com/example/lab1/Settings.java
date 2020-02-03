@@ -16,11 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Settings extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     public static final  String NUMBER1= "com.example.lab1";
-    public static final  String NUMBER2="com.example.lab1";
+    public static final  String NUMBER2="com.example.lab1_";
 
     private  Questions_db questions_db= new Questions_db();
-    private  Question_db_CEH questions_db_CEH= new Question_db_CEH();
-
     Button btnSubmit;
     EditText number_of_questions;
     EditText passing_grade;
@@ -29,11 +27,10 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
     TextView result;
     TextView txtView;
 
-
     Button mainpage;
     Button quit;
     int editText1;
-    int editText2;
+    double editText2;
     Handler setDelay;
     Runnable startDelay;
 
@@ -43,8 +40,6 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         setDelay=new Handler();
-        Intent item_select_Intent=getIntent();
-        //String message = item_select_Intent.getStringExtra("msg");
 
         number_of_questions=(EditText)findViewById(R.id.number_of_questions);
         passing_grade = (EditText)findViewById(R.id.passing_grade);
@@ -58,39 +53,42 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
             public void onClick(View v) {
                 if (number_of_questions.getText().toString().isEmpty() || passing_grade.getText().toString().isEmpty() ) {
                     result.setText("Please Fill All the Details");
-                } else {
+                }
+
+                else if(Integer.parseInt(number_of_questions.getText().toString())>questions_db.getLength()) {
+                    result.setText("Invalid number of questions. Please Fill question number atleast from 1 up to " + questions_db.getLength());
+
+                }
+                else if(Double.parseDouble(passing_grade.getText().toString())>100 || Double.parseDouble(passing_grade.getText().toString())<=1) {
+                    result.setText("Invalid passing grade. Please Fill passing grade atleast from 1% up to 100% ");
+                }
+                    else
+                 {
 
                             editText1=Integer.parseInt(number_of_questions.getText().toString());
-                            editText2= Integer.parseInt(passing_grade.getText().toString());
+                            editText2= Double.parseDouble(passing_grade.getText().toString());
 
-                            result.setText("Number of questions -  " + editText1 + " \n" + "Passing grade -  " + editText2);
+                            result.setText("Number of questions is  " + editText1 + " \n" + "Passing grade is  " + editText2);
                             txtView.setText("User sets the number of questions to "+ editText1+ " and the passing grade to "+ editText2+ "%");
 
                     startDelay = new Runnable(){
 
                         @Override
                         public void run() {
-                            editText1=Integer.parseInt(number_of_questions.getText().toString());
-                            editText2= Integer.parseInt(passing_grade.getText().toString());
-                            Intent intent = new Intent(Settings.this, Settings.class);
-                            //Settings.this, Settings.class
-
-                            intent.putExtra(NUMBER1,editText1);
-                            intent.putExtra(NUMBER2,editText2);
+                            Intent intent = new Intent(Settings.this, MainActivity.class);
+                            intent.putExtra(NUMBER1, editText1);
+                            intent.putExtra(NUMBER2, editText2);
 
                             startActivity(intent);
                         }
                         };
-                    setDelay.postDelayed(startDelay, 5000);
+                    setDelay.postDelayed(startDelay, 2000);
                     }
-
-
             }
         });
 
-       mainpage = findViewById(R.id.mainpage);
+        mainpage = findViewById(R.id.mainpage);
         quit = findViewById(R.id.quit);
-
 
         mainpage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,30 +96,10 @@ public class Settings extends AppCompatActivity implements AdapterView.OnItemSel
                 Intent intent = new Intent(Settings.this, MainActivity.class);
                 startActivity(intent);
             }
-
         });
-
-      /*  quit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Settings.this, MainActivity.class);
-                startActivity(intent);
-            }
-
-        }); */
-
-
-    }
-    public String getQuestion_number(){
-
-        return number_of_questions.getText().toString();
-    }
-    public String getPassing_grade(){
-        return passing_grade.getText().toString();
     }
 
     @Override
-
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String text = parent.getItemAtPosition(position).toString();
         Toast.makeText(parent.getContext(),text, Toast.LENGTH_SHORT).show();
